@@ -3,6 +3,14 @@
 
 #include <string>
 
+enum Type {
+    CHAR,
+    FLOAT,
+    DOUBLE,
+    INT,
+    UNKNOWN,
+};
+
 class ScalarConverter {
     public:
         ScalarConverter();
