@@ -150,17 +150,25 @@ long toLong(const std::string &str) {
 }
 
 void fromChar(const std::string &str) {
-    char c = toChar(str);
-
-    std::cout << "char: ";
-    if (!isascii(c)) {
-        std::cout << "impossible" << std::endl;
-    }
-    else if (!std::isprint(c)) {
-        std::cout << "non displayble" << std::endl;
+    if (str.length() == 1)
+    {
+        char c = toChar(str);
+    
+        if (std::isdigit(c)) {
+            std::cout << "char: non displayble" << std::endl;
+        }
+        else if (!isascii(c)) {
+            std::cout << "char: impossible" << std::endl;
+        }
+        else if (!std::isprint(c)) {
+            std::cout << "char: non displayble" << std::endl;
+        }
+        else {
+            std::cout << "char: '" << c << "'" << std::endl;
+        }
     }
     else {
-        std::cout << "'" << c << "'" << std::endl;
+        std::cout << "char: impossible" << std::endl;
     }
 }
 
@@ -179,8 +187,7 @@ void fromDouble(const std::string &str) {
     std::cout << std::setprecision(1) << std::fixed << toDouble(str) << std::endl;
 }
 
-void printLiterals(const std::string &cppLiteral, int type) {
-    (void)type;
+void printLiterals(const std::string &cppLiteral) {
     fromChar(cppLiteral);
     fromInt(cppLiteral);
     fromFloat(cppLiteral);
@@ -204,5 +211,5 @@ void ScalarConverter::convert(std::string &cppLiteral) {
     else {
         std::cout << "The parameter is not one of the types accepted" << std::endl;
     }
-    printLiterals(cppLiteral, type);
+    printLiterals(cppLiteral);
 }
