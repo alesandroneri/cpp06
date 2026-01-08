@@ -150,41 +150,40 @@ long toLong(const std::string &str) {
 }
 
 void fromChar(const std::string &str) {
-    if (str.length() == 1)
-    {
-        char c = toChar(str);
-    
-        if (std::isdigit(c)) {
-            std::cout << "char: non displayble" << std::endl;
-        }
-        else if (!isascii(c)) {
-            std::cout << "char: impossible" << std::endl;
-        }
-        else if (!std::isprint(c)) {
-            std::cout << "char: non displayble" << std::endl;
-        }
-        else {
-            std::cout << "char: '" << c << "'" << std::endl;
-        }
+    // char c;
+
+    // if (isInt(str)) {
+    //     c = std::atoi(str.c_str());
+    // }
+    // else {
+    //     c = toChar(str);
+    // }
+    char c = toChar(str);
+
+    if (std::isdigit(c)) {
+        std::cout << "char: non displayble" << std::endl;
+    }
+    else if (!isascii(c)) {
+        std::cout << "char: impossible" << std::endl;
+    }
+    else if (!std::isprint(c)) {
+        std::cout << "char: non displayble" << std::endl;
     }
     else {
-        std::cout << "char: impossible" << std::endl;
+        std::cout << "char: '" << c << "'" << std::endl;
     }
 }
 
 void fromInt(const std::string &str) {
-    std::cout << "int: ";
-    std::cout << toLong(str) << std::endl;
+    std::cout << "int: " << toLong(str) << std::endl;
 }
 
 void fromFloat(const std::string &str) {
-    std::cout << "float: ";
-    std::cout << std::setprecision(1) << std::fixed << toFloat(str) << "f" << std::endl;
+    std::cout << "float: " << std::setprecision(1) << std::fixed << toFloat(str) << "f" << std::endl;
 }
 
 void fromDouble(const std::string &str) {
-    std::cout << "double: ";
-    std::cout << std::setprecision(1) << std::fixed << toDouble(str) << std::endl;
+    std::cout << "double: " << std::setprecision(1) << std::fixed << toDouble(str) << std::endl;
 }
 
 void printLiterals(const std::string &cppLiteral) {
