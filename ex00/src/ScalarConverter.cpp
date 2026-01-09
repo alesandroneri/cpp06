@@ -21,11 +21,11 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &copy) {
     return *this;
 }
 
-bool isChar(const std::string &str) {
+static bool isChar(const std::string &str) {
     return (str.length() == 1 && !std::isdigit(str[0]));
 }
 
-bool isInt(const std::string &str) {
+static bool isInt(const std::string &str) {
     if (str.empty()) {
         return false;
     }
@@ -41,7 +41,7 @@ bool isInt(const std::string &str) {
     return true;
 }
 
-bool isFloat(const std::string &str) {
+static bool isFloat(const std::string &str) {
     if (str.empty()) {
         return false;
     }
@@ -52,7 +52,7 @@ bool isFloat(const std::string &str) {
     if (i == len) {
         return false;
     }
-    if (str == "nanf" || str == "-inff" || str == "+inff") {
+    if (str == "nanf" || str == "-inff" || str == "+inff" || str == "inff") {
         return true;
     }  
     for (; i < len; i++) {
@@ -72,7 +72,7 @@ bool isFloat(const std::string &str) {
     return true;
 }
 
-bool isDouble(const std::string &str) {
+static bool isDouble(const std::string &str) {
     if (str.empty()) {
         return false;
     }
@@ -82,7 +82,7 @@ bool isDouble(const std::string &str) {
     if (i == len) {
         return false;
     }
-    if (str == "nan" || str == "-inf" || str == "+inf") {
+    if (str == "nan" || str == "-inf" || str == "+inf" || str == "inf") {
         return true;
     }
     for (; i < len; i++) {
@@ -99,7 +99,7 @@ bool isDouble(const std::string &str) {
     return true;
 }
 
-int parser(std::string &cppLiteral) {
+static int parser(std::string &cppLiteral) {
     if (isChar(cppLiteral)) {
         return CHAR;
     }
@@ -115,55 +115,30 @@ int parser(std::string &cppLiteral) {
     return UNKNOWN;
 }
 
-char toChar(const std::string &str) {
+static char toChar(const std::string &str) {
     return str[0];
 }
 
-float toFloat(const std::string &str) {
+static float toFloat(const std::string &str) {
     char *end;
-    //const char *specialFloatCases[] = {"+inff", "-inff", "nanf"};
     float f = std::strtof(str.c_str(), &end);
-    // if(std::isnan(f)) {
-
-    // }
-    // else if (std::isinf(f)) {
-    // }
     return f;
 }
 
-double toDouble(const std::string &str) {
+static double toDouble(const std::string &str) {
     char *end;
-    //const char *specialDoubleCases[] = {"+inf", "-inf", "nan"};
-
     double d = std::strtod(str.c_str(), &end);
-    // if(std::isnan(d)) {
-
-    // }
-    // else if (std::isinf(d)) {
-    // }
     return d;
 }
 
-long toLong(const std::string &str) {
+static long toLong(const std::string &str) {
     long l = std::atol(str.c_str());
     return l;
 }
 
-void fromChar(const std::string &str) {
-    // char c;
-
-    // if (isInt(str)) {
-    //     c = std::atoi(str.c_str());
-    // }
-    // else {
-    //     c = toChar(str);
-    // }
+static void fromChar(const std::string &str) {
     char c = toChar(str);
-
-    if (std::isdigit(c)) {
-        std::cout << "char: non displayble" << std::endl;
-    }
-    else if (!isascii(c)) {
+    if (!isascii(c)) {
         std::cout << "char: impossible" << std::endl;
     }
     else if (!std::isprint(c)) {
@@ -172,25 +147,78 @@ void fromChar(const std::string &str) {
     else {
         std::cout << "char: '" << c << "'" << std::endl;
     }
+    std::cout << "int: " << static_cast<int>(c) << std::endl;
+    std::cout << "float: " << std::setprecision(1) << std::fixed << static_cast<float>(c) << "f" << std::endl;
+    std::cout << "double: " << std::setprecision(1) << std::fixed << static_cast<double>(c) << std::endl;
+
 }
 
-void fromInt(const std::string &str) {
-    std::cout << "int: " << toLong(str) << std::endl;
+static void printChar(int c)
+{
+    if (!isascii(c)) {
+        std::cout << "char: impossible" << std::endl;
+    }
+    else if (!std::isprint(c)) {
+        std::cout << "char: non displayble" << std::endl;
+    }
+    else {
+        std::cout << "char: '" << static_cast<char>(c) << "'" << std::endl;
+    }
 }
 
-void fromFloat(const std::string &str) {
-    std::cout << "float: " << std::setprecision(1) << std::fixed << toFloat(str) << "f" << std::endl;
+static void fromInt(const std::string &str) {
+    long l = toLong(str);
+    int i = std::atoi(str.c_str());
+    printChar(static_cast<char>(i));
+    l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << i << std::endl;
+    std::cout << "float: " << std::setprecision(1) << std::fixed << static_cast<float>(i) << "f" << std::endl;
+    std::cout << "double: " << std::setprecision(1) << std::fixed << static_cast<double>(i) << std::endl;
 }
 
-void fromDouble(const std::string &str) {
-    std::cout << "double: " << std::setprecision(1) << std::fixed << toDouble(str) << std::endl;
+static void fromFloat(const std::string &str) {
+    float f = toFloat(str);
+    long l = toLong(str);
+
+    if(std::isnan(f) || std::isinf(f)) {
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+    }
+    else {
+        printChar(static_cast<char>(f));
+        l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << static_cast<int>(f) << std::endl;
+    }
+    std::cout << "float: " << std::setprecision(1) << std::fixed << f << "f" << std::endl;
+    std::cout << "double: " << static_cast<double>(f) << std::endl;
 }
 
-void printLiterals(const std::string &cppLiteral) {
-    fromChar(cppLiteral);
-    fromInt(cppLiteral);
-    fromFloat(cppLiteral);
-    fromDouble(cppLiteral);
+static void fromDouble(const std::string &str) {
+    double d = toDouble(str);
+    long l = toLong(str);
+    if(std::isnan(d) || std::isinf(d)) {
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+    }
+    else {
+        printChar(static_cast<char>(d));
+        l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << static_cast<int>(d) << std::endl;
+    }
+    std::cout << "float: " << std::setprecision(1) << std::fixed << static_cast<float>(d) << "f" << std::endl;
+    std::cout << "double: " << std::setprecision(1) << std::fixed << d << std::endl;
+}
+
+static void printLiterals(const std::string &cppLiteral, int type) {
+    if (type == CHAR) {
+        fromChar(cppLiteral);
+    }
+    else if (type == INT) {
+        fromInt(cppLiteral);
+    }
+    else if (type == FLOAT) {
+        fromFloat(cppLiteral);
+    }
+    else if (type == DOUBLE) {
+        fromDouble(cppLiteral);
+    }
 }
 
 void ScalarConverter::convert(std::string &cppLiteral) {
@@ -210,5 +238,5 @@ void ScalarConverter::convert(std::string &cppLiteral) {
     else {
         std::cout << "The parameter is not one of the types accepted" << std::endl;
     }
-    printLiterals(cppLiteral);
+    printLiterals(cppLiteral, type);
 }
