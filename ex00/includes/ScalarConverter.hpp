@@ -12,19 +12,12 @@ enum Type {
 };
 
 class ScalarConverter {
-    public:
+    private:
         ScalarConverter();
         ~ScalarConverter();
         ScalarConverter(const ScalarConverter &copy);
         ScalarConverter &operator=(const ScalarConverter &copy);
-
-        /*
-        toChar
-        toInt
-        toFloat
-        toDouble
-        */
-
+    public:
         static void convert(std::string &cppLiteral);
 };
 
