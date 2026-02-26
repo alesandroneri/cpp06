@@ -51,18 +51,15 @@ void identify(Base &p) {
         static_cast<void>(dynamic_cast<A &>(p));
         std::cout << "A" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {
-    }
+    } catch (const std::bad_cast &wrongCast) {}
     try {
         static_cast<void>(dynamic_cast<B &>(p));
         std::cout << "B" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {
-    }
+    } catch (const std::bad_cast &wrongCast) {}
     try {
         static_cast<void>(dynamic_cast<C &>(p));
         std::cout << "C" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {
-    }
+    } catch (const std::bad_cast &wrongCast) {}
 }

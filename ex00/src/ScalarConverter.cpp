@@ -56,6 +56,12 @@ static bool isFloat(const std::string &str) {
         return true;
     }  
     for (; i < len; i++) {
+        if (hasDot && str[i] == '.') {
+            return false;
+        }
+        if (hasF && str[i] == 'f') {
+            return false;
+        }
         if (str[i] == '.') {
             hasDot = true;
         }
@@ -86,7 +92,11 @@ static bool isDouble(const std::string &str) {
         return true;
     }
     for (; i < len; i++) {
-        if (str[i] == '.') {
+        if (hasDot && str[i] == '.') {
+            return false;
+            
+        }
+        else if (str[i] == '.') {
             hasDot = true;
         }
         else if (!std::isdigit(str[i])) {
@@ -150,7 +160,6 @@ static void fromChar(const std::string &str) {
     std::cout << "int: " << static_cast<int>(c) << std::endl;
     std::cout << "float: " << std::setprecision(1) << std::fixed << static_cast<float>(c) << "f" << std::endl;
     std::cout << "double: " << std::setprecision(1) << std::fixed << static_cast<double>(c) << std::endl;
-
 }
 
 static void printChar(int c)
@@ -175,18 +184,36 @@ static void fromInt(const std::string &str) {
     std::cout << "double: " << std::setprecision(1) << std::fixed << static_cast<double>(i) << std::endl;
 }
 
-static void fromFloat(const std::string &str) {
-    float f = toFloat(str);
-    long l = toLong(str);
+// static void fromFloat(const std::string &str) {
+//     float f = toFloat(str);
+//     long l = toLong(str);
 
-    if(std::isnan(f) || std::isinf(f)) {
-        std::cout << "char: impossible" << std::endl;
-        std::cout << "int: impossible" << std::endl;
-    }
-    else {
-        printChar(static_cast<char>(f));
-        l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << static_cast<int>(f) << std::endl;
-    }
+//     if(std::isnan(f) || std::isinf(f)) {
+//         std::cout << "char: impossible" << std::endl;
+//         std::cout << "int: impossible" << std::endl;
+//     }
+//     else {
+//         printChar(static_cast<char>(f));
+//         l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << static_cast<int>(f) << std::endl;
+//     }
+//     std::cout << "float: " << std::setprecision(1) << std::fixed << f << "f" << std::endl;
+//     std::cout << "double: " << static_cast<double>(f) << std::endl;
+// }
+
+static void fromFloatt(float f) {
+    //float f = toFloat(str);
+    //long l = toLong(str);
+
+    // if(std::isnan(f) || std::isinf(f)) {
+    //     std::cout << "char: impossible" << std::endl;
+    //     std::cout << "int: impossible" << std::endl;
+    // }
+    // else {
+    //     printChar(static_cast<char>(f));
+    //     l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl : std::cout << "int: " << static_cast<int>(f) << std::endl;
+    // }
+    std::cout << "char: " << static_cast<char>(f) << std::endl;
+    std::cout << "int: " << static_cast<int>(f) << std::endl;
     std::cout << "float: " << std::setprecision(1) << std::fixed << f << "f" << std::endl;
     std::cout << "double: " << static_cast<double>(f) << std::endl;
 }
@@ -208,13 +235,15 @@ static void fromDouble(const std::string &str) {
 
 static void printLiterals(const std::string &cppLiteral, int type) {
     if (type == CHAR) {
+
         fromChar(cppLiteral);
     }
     else if (type == INT) {
         fromInt(cppLiteral);
     }
     else if (type == FLOAT) {
-        fromFloat(cppLiteral);
+        float f = toFloat(cppLiteral);
+        fromFloatt(f);
     }
     else if (type == DOUBLE) {
         fromDouble(cppLiteral);
