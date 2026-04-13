@@ -3,12 +3,9 @@
 #include "../includes/A.hpp"
 #include "../includes/B.hpp"
 #include "../includes/C.hpp"
-#include <ctime>
-#include <cstdlib>
 #include <iostream>
 
 int main() {
-    std::srand(std::time(0));
     std::cout << "Testing with pointers:" << std::endl;
     for (int i = 0; i < 5; i++) {
         Base* obj = generate();
