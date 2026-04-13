@@ -4,13 +4,17 @@
 #include "../includes/C.hpp"
 #include <cstdlib>
 #include <string>
+#include <ctime>
 #include <iostream>
+#include <exception>
 
 Base::~Base(){}
 
 Base * generate(void) {
     Base *b = NULL;
     std::string cases[3] = {"A", "B", "C"};
+    static int counter = 0;
+    std::srand(std::time(0) + counter++);
 
     int i = std::rand() % 3;
     switch (i)
@@ -29,6 +33,7 @@ Base * generate(void) {
     }
     return b;
 }
+
 void identify(Base *p) {
     if (p == NULL) {
         std::cout << "Pointer is NULL" << std::endl;
@@ -51,15 +56,17 @@ void identify(Base &p) {
         static_cast<void>(dynamic_cast<A &>(p));
         std::cout << "A" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {}
+    } catch (std::exception &e) {}
+
     try {
         static_cast<void>(dynamic_cast<B &>(p));
         std::cout << "B" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {}
+    } catch (std::exception &e) {}
+
     try {
         static_cast<void>(dynamic_cast<C &>(p));
         std::cout << "C" << std::endl;
         return;
-    } catch (const std::bad_cast &wrongCast) {}
+    } catch (std::exception &e) {}
 }
