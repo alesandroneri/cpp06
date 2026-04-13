@@ -4,21 +4,22 @@
 #include <string>
 
 enum Type {
-    CHAR,
-    FLOAT,
-    DOUBLE,
-    INT,
-    UNKNOWN,
+  CHAR,
+  FLOAT,
+  DOUBLE,
+  INT,
+  UNKNOWN,
 };
 
 class ScalarConverter {
-    private:
-        ScalarConverter();
-        ~ScalarConverter();
-        ScalarConverter(const ScalarConverter &copy);
-        ScalarConverter &operator=(const ScalarConverter &copy);
-    public:
-        static void convert(std::string &cppLiteral);
+private:
+  ScalarConverter();
+  ~ScalarConverter();
+  ScalarConverter(const ScalarConverter &copy);
+  ScalarConverter &operator=(const ScalarConverter &copy);
+
+public:
+  static void convert(std::string &cppLiteral);
 };
 
 #endif
