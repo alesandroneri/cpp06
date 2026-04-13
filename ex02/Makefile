@@ -1,6 +1,9 @@
 NAME = identify
 
 SRC = src/Base.cpp \
+	src/A.cpp \
+	src/B.cpp \
+	src/C.cpp \
 	src/main.cpp
 
 OBJ = $(SRC:.cpp=.o)
