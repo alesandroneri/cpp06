@@ -12,7 +12,6 @@ Base::~Base(){}
 
 Base * generate(void) {
     Base *b = NULL;
-    std::string cases[3] = {"A", "B", "C"};
     static int counter = 0;
     std::srand(std::time(0) + counter++);
 

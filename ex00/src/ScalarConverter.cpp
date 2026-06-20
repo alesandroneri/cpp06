@@ -110,7 +110,7 @@ static bool isDouble(const std::string &str) {
   return true;
 }
 
-static int parser(std::string &cppLiteral) {
+static int parser(const std::string &cppLiteral) {
   if (isChar(cppLiteral)) {
     return CHAR;
   } else if (isInt(cppLiteral)) {
@@ -148,7 +148,7 @@ static void fromChar(const std::string &str) {
   if (!isascii(c)) {
     std::cout << "char: impossible" << std::endl;
   } else if (!std::isprint(c)) {
-    std::cout << "char: non displayble" << std::endl;
+    std::cout << "char: Non displayable" << std::endl;
   } else {
     std::cout << "char: '" << c << "'" << std::endl;
   }
@@ -163,7 +163,7 @@ static void printChar(int c) {
   if (!isascii(c)) {
     std::cout << "char: impossible" << std::endl;
   } else if (!std::isprint(c)) {
-    std::cout << "char: non displayble" << std::endl;
+    std::cout << "char: Non displayable" << std::endl;
   } else {
     std::cout << "char: '" << static_cast<char>(c) << "'" << std::endl;
   }
@@ -171,14 +171,18 @@ static void printChar(int c) {
 
 static void fromInt(const std::string &str) {
   long l = toLong(str);
-  int i = std::atoi(str.c_str());
-  printChar(static_cast<char>(i));
-  l > INT_MAX || l < INT_MIN ? std::cout << "int: impossible" << std::endl
-                             : std::cout << "int: " << i << std::endl;
+  if (l > INT_MAX || l < INT_MIN) {
+    printChar(static_cast<int>(l));
+    std::cout << "int: impossible" << std::endl;
+  } else {
+    int i = static_cast<int>(l);
+    printChar(static_cast<char>(i));
+    std::cout << "int: " << i << std::endl;
+  }
   std::cout << "float: " << std::setprecision(1) << std::fixed
-            << static_cast<float>(i) << "f" << std::endl;
+            << static_cast<float>(l) << "f" << std::endl;
   std::cout << "double: " << std::setprecision(1) << std::fixed
-            << static_cast<double>(i) << std::endl;
+            << static_cast<double>(l) << std::endl;
 }
 
 static void fromFloat(const std::string &str) {
@@ -189,15 +193,25 @@ static void fromFloat(const std::string &str) {
     std::cout << "char: impossible" << std::endl;
     std::cout << "int: impossible" << std::endl;
   } else {
-    printChar(static_cast<char>(f));
+    printChar(static_cast<int>(f));
     l > INT_MAX || l < INT_MIN
         ? std::cout << "int: impossible" << std::endl
         : std::cout << "int: " << static_cast<int>(f) << std::endl;
   }
-  std::cout << "float: " << std::setprecision(1) << std::fixed << f << "f"
-            << std::endl;
-  std::cout << "double: " << std::setprecision(1) << std::fixed
-            << static_cast<double>(f) << std::endl;
+  if (std::isinf(f)) {
+    f > 0 ? std::cout << "float: +inff" << std::endl
+          : std::cout << "float: -inff" << std::endl;
+  } else {
+    std::cout << "float: " << std::setprecision(1) << std::fixed << f << "f"
+              << std::endl;
+  }
+  if (std::isinf(static_cast<double>(f))) {
+    f > 0 ? std::cout << "double: +inf" << std::endl
+          : std::cout << "double: -inf" << std::endl;
+  } else {
+    std::cout << "double: " << std::setprecision(1) << std::fixed
+              << static_cast<double>(f) << std::endl;
+  }
 }
 
 static void fromDouble(const std::string &str) {
@@ -207,15 +221,25 @@ static void fromDouble(const std::string &str) {
     std::cout << "char: impossible" << std::endl;
     std::cout << "int: impossible" << std::endl;
   } else {
-    printChar(static_cast<char>(d));
+    printChar(static_cast<int>(d));
     l > INT_MAX || l < INT_MIN
         ? std::cout << "int: impossible" << std::endl
         : std::cout << "int: " << static_cast<int>(d) << std::endl;
   }
-  std::cout << "float: " << std::setprecision(1) << std::fixed
-            << static_cast<float>(d) << "f" << std::endl;
-  std::cout << "double: " << std::setprecision(1) << std::fixed << d
-            << std::endl;
+  if (std::isinf(d)) {
+    d > 0 ? std::cout << "float: +inff" << std::endl
+          : std::cout << "float: -inff" << std::endl;
+  } else {
+    std::cout << "float: " << std::setprecision(1) << std::fixed
+              << static_cast<float>(d) << "f" << std::endl;
+  }
+  if (std::isinf(d)) {
+    d > 0 ? std::cout << "double: +inf" << std::endl
+          : std::cout << "double: -inf" << std::endl;
+  } else {
+    std::cout << "double: " << std::setprecision(1) << std::fixed << d
+              << std::endl;
+  }
 }
 
 static void printLiterals(const std::string &cppLiteral, int type) {
@@ -233,7 +257,7 @@ static void printLiterals(const std::string &cppLiteral, int type) {
   }
 }
 
-void ScalarConverter::convert(std::string &cppLiteral) {
+void ScalarConverter::convert(const std::string &cppLiteral) {
   int type = parser(cppLiteral);
 
   printLiterals(cppLiteral, type);

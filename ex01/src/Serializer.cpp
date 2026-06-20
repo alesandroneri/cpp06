@@ -3,13 +3,11 @@
 Serializer::Serializer(){}
 Serializer::~Serializer(){}
 Serializer::Serializer(const Serializer &copy) {
-    *this = copy;
+    (void)copy;
 }
 
 Serializer &Serializer::operator=(const Serializer &copy) {
-    if (this != &copy) {
-        *this = copy;
-    }
+    static_cast<void>(copy);
     return *this;
 }
 

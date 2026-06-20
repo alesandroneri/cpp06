@@ -19,7 +19,7 @@ private:
   ScalarConverter &operator=(const ScalarConverter &copy);
 
 public:
-  static void convert(std::string &cppLiteral);
+  static void convert(const std::string &cppLiteral);
 };
 
 #endif
